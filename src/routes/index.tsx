@@ -1,10 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Wrench, Droplets, Disc3, ShieldCheck, Clock, MapPin, MessageCircle, AlertTriangle, Menu, X } from "lucide-react";
-import { useState } from "react";
-import hero from "@/assets/hero-oficina.jpg";
-import gMec from "@/assets/galeria-mecanico.jpg";
-import gFer from "@/assets/galeria-ferramentas.jpg";
-import gFre from "@/assets/galeria-freios.jpg";
+import { useEffect, useState } from "react";
+import hero640 from "@/assets/hero-oficina-640.webp";
+import hero1280 from "@/assets/hero-oficina-1280.webp";
+import gMec640 from "@/assets/galeria-mecanico-640.webp";
+import gMec1280 from "@/assets/galeria-mecanico-1280.webp";
+import gFer640 from "@/assets/galeria-ferramentas-640.webp";
+import gFer1280 from "@/assets/galeria-ferramentas-1280.webp";
+import gFre640 from "@/assets/galeria-freios-640.webp";
+import gFre1280 from "@/assets/galeria-freios-1280.webp";
 import { whatsappLink, WHATSAPP_DISPLAY } from "@/config/site";
 
 export const Route = createFileRoute("/")({
@@ -48,6 +52,27 @@ function Aviso() {
 
 function Index() {
   const [open, setOpen] = useState(false);
+  const [active, setActive] = useState("");
+  useEffect(() => {
+    const ids = nav.map((n) => n.href.slice(1));
+    const obs = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) if (e.isIntersecting) setActive(e.target.id);
+      },
+      { rootMargin: "-40% 0px -55% 0px" },
+    );
+    ids.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) obs.observe(el);
+    });
+    return () => obs.disconnect();
+  }, []);
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
   return (
     <div className="min-h-screen bg-background text-foreground">
       <header className="sticky top-0 z-40 shadow-sm">
@@ -60,7 +85,7 @@ function Index() {
             </a>
             <nav className="hidden items-center gap-6 md:flex" aria-label="Principal">
               {nav.map((n) => (
-                <a key={n.href} href={n.href} className="text-sm font-medium opacity-90 hover:text-primary">{n.label}</a>
+                <a key={n.href} href={n.href} aria-current={active === n.href.slice(1) ? "true" : undefined} className="rounded-sm text-sm font-medium hover:text-primary aria-[current]:text-primary">{n.label}</a>
               ))}
               <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" className="rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90">Pedir orçamento</a>
             </nav>
@@ -71,7 +96,10 @@ function Index() {
           {open && (
             <nav className="flex max-h-[calc(100vh-7rem)] flex-col gap-1 overflow-y-auto border-t border-graphite-foreground/10 px-4 pb-5 pt-2 md:hidden" aria-label="Menu móvel">
               {nav.map((n) => (
-                <a key={n.href} href={n.href} onClick={() => setOpen(false)} className="rounded-md px-3 py-3 text-base font-medium hover:bg-graphite-foreground/10 hover:text-primary">{n.label}</a>
+                <a key={n.href} href={n.href} onClick={() => setOpen(false)} aria-current={active === n.href.slice(1) ? "true" : undefined} className="flex items-center justify-between rounded-md border-l-4 border-transparent px-3 py-3 text-base font-semibold hover:bg-graphite-foreground/10 aria-[current]:border-primary aria-[current]:bg-graphite-foreground/10 aria-[current]:text-primary">
+                  {n.label}
+                  {active === n.href.slice(1) && <span className="text-xs font-medium uppercase tracking-wide">Você está aqui</span>}
+                </a>
               ))}
               <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" className="mt-3 flex min-h-12 items-center justify-center gap-2 rounded-md bg-primary px-4 py-3 text-center font-semibold text-primary-foreground">Pedir orçamento</a>
             </nav>
@@ -85,13 +113,13 @@ function Index() {
             <div>
               <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">São Gonçalo — RJ · fictício</p>
               <h1 className="font-display text-[2.5rem] font-bold uppercase leading-[1.05] sm:text-5xl lg:text-6xl">Cuidado e confiança para seguir caminho.</h1>
-              <p className="mt-4 max-w-md text-base opacity-85 sm:mt-5 sm:text-lg">Manutenção automotiva com atendimento claro e serviços para o dia a dia.</p>
+              <p className="mt-4 max-w-md text-base opacity-95 sm:mt-5 sm:text-lg">Manutenção automotiva com atendimento claro e serviços para o dia a dia.</p>
               <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" className="mt-7 flex w-full min-h-14 items-center justify-center gap-2 rounded-md bg-primary px-5 py-4 sm:inline-flex sm:w-auto text-base font-semibold text-primary-foreground shadow-lg hover:bg-primary/90">
                 <MessageCircle className="h-5 w-5" aria-hidden /> Pedir orçamento pelo WhatsApp
               </a>
-              <p className="mt-3 text-xs opacity-70">Contato demonstrativo: {WHATSAPP_DISPLAY}</p>
+              <p className="mt-3 text-xs opacity-90">Contato demonstrativo: {WHATSAPP_DISPLAY}</p>
             </div>
-            <img src={hero} alt="Imagem demonstrativa de uma oficina mecânica organizada" width={1536} height={1024} fetchPriority="high" className="aspect-[3/2] w-full rounded-lg object-cover shadow-2xl" />
+            <img src={hero1280} srcSet={`${hero640} 640w, ${hero1280} 1280w`} sizes="(min-width: 768px) 560px, calc(100vw - 2rem)" decoding="async" alt="Imagem demonstrativa de uma oficina mecânica organizada" width={1536} height={1024} fetchPriority="high" className="aspect-[3/2] w-full rounded-lg object-cover shadow-2xl" />
           </div>
         </section>
 
@@ -117,7 +145,7 @@ function Index() {
                   </div>
                   <h3 className="mt-4 text-lg font-semibold">{nome}</h3>
                   <p className="mt-2 flex-1 text-sm text-muted-foreground">{desc}</p>
-                  <p className="mt-4 font-display text-2xl font-bold text-primary">{preco}</p>
+                  <p className="mt-4 font-display text-2xl font-bold text-primary-ink">{preco}</p>
                   <a href={whatsappLink(nome)} target="_blank" rel="noopener noreferrer" className="mt-4 flex min-h-12 items-center justify-center rounded-md border-2 border-graphite px-4 py-2.5 text-center text-sm font-semibold hover:bg-graphite hover:text-graphite-foreground">Consultar serviço</a>
                 </article>
               ))}
@@ -131,11 +159,11 @@ function Index() {
           <p className="mt-2 text-center text-sm text-muted-foreground">Imagens ilustrativas geradas para esta demonstração — não retratam trabalhos realizados.</p>
           <div className="mt-8 grid grid-cols-2 gap-3 sm:mt-10 sm:grid-cols-3 sm:gap-4">
             {[
-              { src: gMec, alt: "Imagem ilustrativa de mãos de mecânico trabalhando em um motor" },
-              { src: gFer, alt: "Imagem ilustrativa de ferramentas organizadas na parede" },
-              { src: gFre, alt: "Imagem ilustrativa de disco e pastilhas de freio" },
-            ].map((g) => (
-              <img key={g.alt} src={g.src} alt={g.alt} loading="lazy" className="aspect-[4/3] w-full rounded-lg object-cover first:col-span-2 sm:first:col-span-1" />
+              { src: gMec1280, s: gMec640, alt: "Imagem ilustrativa de mãos de mecânico trabalhando em um motor" },
+              { src: gFer1280, s: gFer640, alt: "Imagem ilustrativa de ferramentas organizadas na parede" },
+              { src: gFre1280, s: gFre640, alt: "Imagem ilustrativa de disco e pastilhas de freio" },
+            ].map((g, i) => (
+              <img key={g.alt} src={g.src} srcSet={`${g.s} 640w, ${g.src} 1280w`} sizes={i === 0 ? "(min-width: 640px) 33vw, 100vw" : "(min-width: 640px) 33vw, 50vw"} width={1280} height={960} alt={g.alt} loading="lazy" decoding="async" className="aspect-[4/3] w-full rounded-lg object-cover first:col-span-2 sm:first:col-span-1" />
             ))}
           </div>
         </section>
@@ -144,7 +172,7 @@ function Index() {
           <div className="mx-auto grid max-w-6xl gap-4 px-4 sm:gap-6 md:grid-cols-2">
             <div id="horarios" className="rounded-lg border border-graphite-foreground/15 p-5 scroll-mt-28 sm:p-6">
               <h2 className="flex items-center gap-2 font-display text-2xl font-bold uppercase sm:text-3xl"><Clock className="h-6 w-6 text-primary" aria-hidden /> Horários</h2>
-              <p className="mt-1 text-sm opacity-70">Horário demonstrativo (fictício)</p>
+              <p className="mt-1 text-sm opacity-90">Horário demonstrativo (fictício)</p>
               <dl className="mt-5 space-y-3">
                 {[["Segunda a sexta", "8h às 18h"], ["Sábado", "8h às 13h"], ["Domingo", "Fechado"]].map(([d, h]) => (
                   <div key={d} className="flex justify-between gap-4 border-b border-graphite-foreground/10 pb-2">
@@ -155,24 +183,24 @@ function Index() {
             </div>
             <div id="localizacao" className="rounded-lg border border-graphite-foreground/15 p-6 scroll-mt-24">
               <h2 className="flex items-center gap-2 font-display text-2xl font-bold uppercase sm:text-3xl"><MapPin className="h-6 w-6 text-primary" aria-hidden /> Localização</h2>
-              <p className="mt-1 text-sm opacity-70">Endereço demonstrativo (fictício) — sem mapa</p>
+              <p className="mt-1 text-sm opacity-90">Endereço demonstrativo (fictício) — sem mapa</p>
               <p className="mt-5 text-lg">Rua dos Motores, 123 — endereço fictício, São Gonçalo — RJ</p>
-              <p className="mt-4 text-sm opacity-80">Contato demonstrativo: {WHATSAPP_DISPLAY}</p>
+              <p className="mt-4 text-sm opacity-90">Contato demonstrativo: {WHATSAPP_DISPLAY}</p>
             </div>
           </div>
         </section>
       </main>
 
       <footer className="bg-graphite text-graphite-foreground">
-        <div className="mx-auto max-w-6xl px-4 py-6 text-center text-sm opacity-80">
+        <div className="mx-auto max-w-6xl px-4 py-6 text-center text-sm opacity-90">
           Oficina Ponto Certo · projeto de portfólio. Nenhum serviço real é oferecido.
         </div>
         <div className="pb-20 md:pb-0 bg-primary"><Aviso /></div>
       </footer>
 
-      <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp demonstrativo" className="fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-4 z-50 flex min-h-14 items-center gap-2 rounded-full bg-whatsapp px-4 py-3 text-sm font-semibold text-primary-foreground shadow-xl hover:opacity-90">
+      <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp demonstrativo" className="fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-4 z-50 flex min-h-14 items-center gap-2 rounded-full bg-whatsapp px-4 py-3 text-sm font-semibold text-graphite-foreground shadow-xl hover:opacity-90">
         <MessageCircle className="h-6 w-6" aria-hidden />
-        <span>WhatsApp <span className="font-normal opacity-90">(demo)</span></span>
+        <span>WhatsApp <span className="font-normal">(demo)</span></span>
       </a>
     </div>
   );
