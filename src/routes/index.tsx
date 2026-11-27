@@ -39,7 +39,7 @@ const nav = [
 
 function Aviso() {
   return (
-    <div className="bg-primary px-4 py-2 text-center text-xs font-semibold text-primary-foreground sm:text-sm">
+    <div className="bg-primary px-3 py-1.5 text-center text-[11px] leading-snug font-semibold text-primary-foreground sm:text-sm">
       <AlertTriangle className="mr-1.5 inline h-4 w-4 align-[-3px]" aria-hidden />
       {AVISO}
     </div>
@@ -53,8 +53,8 @@ function Index() {
       <header className="sticky top-0 z-40 shadow-sm">
         <Aviso />
         <div className="bg-graphite text-graphite-foreground">
-          <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
-            <a href="#inicio" className="flex min-w-0 items-center gap-2 font-display text-xl font-bold uppercase tracking-wide sm:text-2xl">
+          <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-2.5 md:py-3">
+            <a href="#inicio" className="flex min-w-0 items-center gap-2 font-display text-lg font-bold uppercase tracking-wide sm:text-2xl">
               <Wrench className="h-6 w-6 shrink-0 text-primary" aria-hidden />
               <span className="truncate">Oficina <span className="text-primary">Ponto Certo</span></span>
             </a>
@@ -64,16 +64,16 @@ function Index() {
               ))}
               <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" className="rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90">Pedir orçamento</a>
             </nav>
-            <button className="shrink-0 rounded-md p-2 md:hidden" onClick={() => setOpen(!open)} aria-label={open ? "Fechar menu" : "Abrir menu"} aria-expanded={open}>
+            <button className="-mr-2 flex h-11 w-11 shrink-0 items-center justify-center rounded-md hover:bg-graphite-foreground/10 md:hidden" onClick={() => setOpen(!open)} aria-label={open ? "Fechar menu" : "Abrir menu"} aria-expanded={open}>
               {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
           </div>
           {open && (
-            <nav className="flex flex-col gap-1 border-t border-graphite-foreground/10 px-4 pb-4 pt-2 md:hidden" aria-label="Menu móvel">
+            <nav className="flex max-h-[calc(100vh-7rem)] flex-col gap-1 overflow-y-auto border-t border-graphite-foreground/10 px-4 pb-5 pt-2 md:hidden" aria-label="Menu móvel">
               {nav.map((n) => (
-                <a key={n.href} href={n.href} onClick={() => setOpen(false)} className="rounded-md px-2 py-3 text-base font-medium hover:bg-graphite-foreground/10">{n.label}</a>
+                <a key={n.href} href={n.href} onClick={() => setOpen(false)} className="rounded-md px-3 py-3 text-base font-medium hover:bg-graphite-foreground/10 hover:text-primary">{n.label}</a>
               ))}
-              <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" className="mt-2 rounded-md bg-primary px-4 py-3 text-center font-semibold text-primary-foreground">Pedir orçamento</a>
+              <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" className="mt-3 flex min-h-12 items-center justify-center gap-2 rounded-md bg-primary px-4 py-3 text-center font-semibold text-primary-foreground">Pedir orçamento</a>
             </nav>
           )}
         </div>
@@ -81,12 +81,12 @@ function Index() {
 
       <main>
         <section id="inicio" className="bg-graphite text-graphite-foreground">
-          <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 py-14 md:grid-cols-2 md:py-20">
+          <div className="mx-auto grid max-w-6xl items-center gap-8 px-4 py-10 sm:py-14 md:grid-cols-2 md:gap-10 md:py-20">
             <div>
               <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">São Gonçalo — RJ · fictício</p>
-              <h1 className="font-display text-4xl font-bold uppercase leading-tight sm:text-5xl lg:text-6xl">Cuidado e confiança para seguir caminho.</h1>
-              <p className="mt-5 max-w-md text-lg opacity-85">Manutenção automotiva com atendimento claro e serviços para o dia a dia.</p>
-              <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" className="mt-8 inline-flex items-center gap-2 rounded-md bg-primary px-6 py-4 text-base font-semibold text-primary-foreground shadow-lg hover:bg-primary/90">
+              <h1 className="font-display text-[2.5rem] font-bold uppercase leading-[1.05] sm:text-5xl lg:text-6xl">Cuidado e confiança para seguir caminho.</h1>
+              <p className="mt-4 max-w-md text-base opacity-85 sm:mt-5 sm:text-lg">Manutenção automotiva com atendimento claro e serviços para o dia a dia.</p>
+              <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" className="mt-7 flex w-full min-h-14 items-center justify-center gap-2 rounded-md bg-primary px-5 py-4 sm:inline-flex sm:w-auto text-base font-semibold text-primary-foreground shadow-lg hover:bg-primary/90">
                 <MessageCircle className="h-5 w-5" aria-hidden /> Pedir orçamento pelo WhatsApp
               </a>
               <p className="mt-3 text-xs opacity-70">Contato demonstrativo: {WHATSAPP_DISPLAY}</p>
@@ -95,30 +95,30 @@ function Index() {
           </div>
         </section>
 
-        <section id="sobre" className="mx-auto max-w-3xl px-4 py-16 text-center md:py-20">
+        <section id="sobre" className="mx-auto max-w-3xl px-5 py-12 text-center sm:py-16 md:py-20">
           <h2 className="font-display text-3xl font-bold uppercase sm:text-4xl">Sobre a Ponto Certo</h2>
           <div className="mx-auto mt-3 h-1 w-16 rounded bg-primary" />
-          <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
+          <p className="mt-5 text-base leading-relaxed sm:mt-6 sm:text-lg text-muted-foreground">
             A Oficina Ponto Certo é uma empresa fictícia criada para esta demonstração de portfólio. Esta página ilustra como uma oficina poderia apresentar seus serviços e facilitar o contato de novos clientes.
           </p>
         </section>
 
-        <section id="servicos" className="bg-muted py-16 md:py-20">
+        <section id="servicos" className="bg-muted py-12 sm:py-16 md:py-20">
           <div className="mx-auto max-w-6xl px-4">
             <div className="text-center">
               <h2 className="font-display text-3xl font-bold uppercase sm:text-4xl">Serviços</h2>
               <p className="mt-2 inline-block rounded-full bg-accent px-4 py-1 text-sm font-medium">Serviços e valores fictícios para demonstração</p>
             </div>
-            <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="mt-8 grid gap-4 sm:mt-10 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
               {servicos.map(({ nome, desc, preco, Icon }) => (
-                <article key={nome} className="flex flex-col rounded-lg border bg-card p-6 shadow-sm">
+                <article key={nome} className="flex flex-col rounded-lg border bg-card p-5 sm:p-6 shadow-sm">
                   <div className="flex h-12 w-12 items-center justify-center rounded-md bg-graphite text-primary">
                     <Icon className="h-6 w-6" aria-hidden />
                   </div>
                   <h3 className="mt-4 text-lg font-semibold">{nome}</h3>
                   <p className="mt-2 flex-1 text-sm text-muted-foreground">{desc}</p>
                   <p className="mt-4 font-display text-2xl font-bold text-primary">{preco}</p>
-                  <a href={whatsappLink(nome)} target="_blank" rel="noopener noreferrer" className="mt-4 rounded-md border-2 border-graphite px-4 py-2.5 text-center text-sm font-semibold hover:bg-graphite hover:text-graphite-foreground">Consultar serviço</a>
+                  <a href={whatsappLink(nome)} target="_blank" rel="noopener noreferrer" className="mt-4 flex min-h-12 items-center justify-center rounded-md border-2 border-graphite px-4 py-2.5 text-center text-sm font-semibold hover:bg-graphite hover:text-graphite-foreground">Consultar serviço</a>
                 </article>
               ))}
             </div>
@@ -126,23 +126,23 @@ function Index() {
           </div>
         </section>
 
-        <section id="galeria" className="mx-auto max-w-6xl px-4 py-16 md:py-20">
+        <section id="galeria" className="mx-auto max-w-6xl px-4 py-12 sm:py-16 md:py-20">
           <h2 className="text-center font-display text-3xl font-bold uppercase sm:text-4xl">Galeria</h2>
           <p className="mt-2 text-center text-sm text-muted-foreground">Imagens ilustrativas geradas para esta demonstração — não retratam trabalhos realizados.</p>
-          <div className="mt-10 grid gap-4 sm:grid-cols-3">
+          <div className="mt-8 grid grid-cols-2 gap-3 sm:mt-10 sm:grid-cols-3 sm:gap-4">
             {[
               { src: gMec, alt: "Imagem ilustrativa de mãos de mecânico trabalhando em um motor" },
               { src: gFer, alt: "Imagem ilustrativa de ferramentas organizadas na parede" },
               { src: gFre, alt: "Imagem ilustrativa de disco e pastilhas de freio" },
             ].map((g) => (
-              <img key={g.alt} src={g.src} alt={g.alt} loading="lazy" className="aspect-[4/3] w-full rounded-lg object-cover" />
+              <img key={g.alt} src={g.src} alt={g.alt} loading="lazy" className="aspect-[4/3] w-full rounded-lg object-cover first:col-span-2 sm:first:col-span-1" />
             ))}
           </div>
         </section>
 
-        <section className="bg-graphite py-16 text-graphite-foreground md:py-20">
-          <div className="mx-auto grid max-w-6xl gap-6 px-4 md:grid-cols-2">
-            <div id="horarios" className="rounded-lg border border-graphite-foreground/15 p-6 scroll-mt-24">
+        <section className="bg-graphite py-12 text-graphite-foreground sm:py-16 md:py-20">
+          <div className="mx-auto grid max-w-6xl gap-4 px-4 sm:gap-6 md:grid-cols-2">
+            <div id="horarios" className="rounded-lg border border-graphite-foreground/15 p-5 scroll-mt-28 sm:p-6">
               <h2 className="flex items-center gap-2 font-display text-2xl font-bold uppercase sm:text-3xl"><Clock className="h-6 w-6 text-primary" aria-hidden /> Horários</h2>
               <p className="mt-1 text-sm opacity-70">Horário demonstrativo (fictício)</p>
               <dl className="mt-5 space-y-3">
@@ -167,10 +167,10 @@ function Index() {
         <div className="mx-auto max-w-6xl px-4 py-6 text-center text-sm opacity-80">
           Oficina Ponto Certo · projeto de portfólio. Nenhum serviço real é oferecido.
         </div>
-        <Aviso />
+        <div className="pb-20 md:pb-0 bg-primary"><Aviso /></div>
       </footer>
 
-      <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp demonstrativo" className="fixed bottom-4 right-4 z-50 flex items-center gap-2 rounded-full bg-whatsapp px-4 py-3 text-sm font-semibold text-primary-foreground shadow-xl hover:opacity-90">
+      <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp demonstrativo" className="fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-4 z-50 flex min-h-14 items-center gap-2 rounded-full bg-whatsapp px-4 py-3 text-sm font-semibold text-primary-foreground shadow-xl hover:opacity-90">
         <MessageCircle className="h-6 w-6" aria-hidden />
         <span>WhatsApp <span className="font-normal opacity-90">(demo)</span></span>
       </a>
