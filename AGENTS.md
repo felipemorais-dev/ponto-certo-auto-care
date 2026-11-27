@@ -28,3 +28,4 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+Landing page only; WhatsApp number lives in src/config/site.ts — one place to swap the fictitious placeholder.

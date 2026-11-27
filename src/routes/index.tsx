@@ -1,23 +1,179 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Wrench, Droplets, Disc3, ShieldCheck, Clock, MapPin, MessageCircle, AlertTriangle, Menu, X } from "lucide-react";
+import { useState } from "react";
+import hero from "@/assets/hero-oficina.jpg";
+import gMec from "@/assets/galeria-mecanico.jpg";
+import gFer from "@/assets/galeria-ferramentas.jpg";
+import gFre from "@/assets/galeria-freios.jpg";
+import { whatsappLink, WHATSAPP_DISPLAY } from "@/config/site";
 
-// The home route ships no og:image, so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "Oficina Ponto Certo — projeto demonstrativo de portfólio" },
+      { name: "description", content: "Landing page fictícia de uma oficina mecânica em São Gonçalo, RJ, criada como demonstração de portfólio." },
+      { property: "og:title", content: "Oficina Ponto Certo — projeto demonstrativo" },
+      { property: "og:description", content: "Landing page fictícia de oficina mecânica para portfólio." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
+const AVISO = "PROJETO DEMONSTRATIVO — empresa, serviços, preços, endereço e contato fictícios";
+
+const servicos = [
+  { nome: "Revisão básica", desc: "Inspeção visual de itens essenciais do veículo.", preco: "A partir de R$ 180,00", Icon: Wrench },
+  { nome: "Troca de óleo e filtro", desc: "Serviço demonstrativo, com óleo e filtro sujeitos ao modelo do veículo.", preco: "A partir de R$ 150,00", Icon: Droplets },
+  { nome: "Inspeção do sistema de freios", desc: "Verificação de pastilhas, discos e componentes.", preco: "A partir de R$ 90,00", Icon: ShieldCheck },
+  { nome: "Troca de pastilhas de freio", desc: "Valor demonstrativo, sujeito ao modelo do veículo e às peças necessárias.", preco: "A partir de R$ 220,00", Icon: Disc3 },
+];
+
+const nav = [
+  { href: "#servicos", label: "Serviços" },
+  { href: "#sobre", label: "Sobre" },
+  { href: "#horarios", label: "Horários" },
+  { href: "#localizacao", label: "Localização" },
+];
+
+function Aviso() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
+    <div className="bg-primary px-4 py-2 text-center text-xs font-semibold text-primary-foreground sm:text-sm">
+      <AlertTriangle className="mr-1.5 inline h-4 w-4 align-[-3px]" aria-hidden />
+      {AVISO}
+    </div>
+  );
+}
+
+function Index() {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="min-h-screen bg-background text-foreground">
+      <header className="sticky top-0 z-40 shadow-sm">
+        <Aviso />
+        <div className="bg-graphite text-graphite-foreground">
+          <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
+            <a href="#inicio" className="flex min-w-0 items-center gap-2 font-display text-xl font-bold uppercase tracking-wide sm:text-2xl">
+              <Wrench className="h-6 w-6 shrink-0 text-primary" aria-hidden />
+              <span className="truncate">Oficina <span className="text-primary">Ponto Certo</span></span>
+            </a>
+            <nav className="hidden items-center gap-6 md:flex" aria-label="Principal">
+              {nav.map((n) => (
+                <a key={n.href} href={n.href} className="text-sm font-medium opacity-90 hover:text-primary">{n.label}</a>
+              ))}
+              <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" className="rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90">Pedir orçamento</a>
+            </nav>
+            <button className="shrink-0 rounded-md p-2 md:hidden" onClick={() => setOpen(!open)} aria-label={open ? "Fechar menu" : "Abrir menu"} aria-expanded={open}>
+              {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </button>
+          </div>
+          {open && (
+            <nav className="flex flex-col gap-1 border-t border-graphite-foreground/10 px-4 pb-4 pt-2 md:hidden" aria-label="Menu móvel">
+              {nav.map((n) => (
+                <a key={n.href} href={n.href} onClick={() => setOpen(false)} className="rounded-md px-2 py-3 text-base font-medium hover:bg-graphite-foreground/10">{n.label}</a>
+              ))}
+              <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" className="mt-2 rounded-md bg-primary px-4 py-3 text-center font-semibold text-primary-foreground">Pedir orçamento</a>
+            </nav>
+          )}
+        </div>
+      </header>
+
+      <main>
+        <section id="inicio" className="bg-graphite text-graphite-foreground">
+          <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 py-14 md:grid-cols-2 md:py-20">
+            <div>
+              <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">São Gonçalo — RJ · fictício</p>
+              <h1 className="font-display text-4xl font-bold uppercase leading-tight sm:text-5xl lg:text-6xl">Cuidado e confiança para seguir caminho.</h1>
+              <p className="mt-5 max-w-md text-lg opacity-85">Manutenção automotiva com atendimento claro e serviços para o dia a dia.</p>
+              <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" className="mt-8 inline-flex items-center gap-2 rounded-md bg-primary px-6 py-4 text-base font-semibold text-primary-foreground shadow-lg hover:bg-primary/90">
+                <MessageCircle className="h-5 w-5" aria-hidden /> Pedir orçamento pelo WhatsApp
+              </a>
+              <p className="mt-3 text-xs opacity-70">Contato demonstrativo: {WHATSAPP_DISPLAY}</p>
+            </div>
+            <img src={hero} alt="Imagem demonstrativa de uma oficina mecânica organizada" width={1536} height={1024} fetchPriority="high" className="aspect-[3/2] w-full rounded-lg object-cover shadow-2xl" />
+          </div>
+        </section>
+
+        <section id="sobre" className="mx-auto max-w-3xl px-4 py-16 text-center md:py-20">
+          <h2 className="font-display text-3xl font-bold uppercase sm:text-4xl">Sobre a Ponto Certo</h2>
+          <div className="mx-auto mt-3 h-1 w-16 rounded bg-primary" />
+          <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
+            A Oficina Ponto Certo é uma empresa fictícia criada para esta demonstração de portfólio. Esta página ilustra como uma oficina poderia apresentar seus serviços e facilitar o contato de novos clientes.
+          </p>
+        </section>
+
+        <section id="servicos" className="bg-muted py-16 md:py-20">
+          <div className="mx-auto max-w-6xl px-4">
+            <div className="text-center">
+              <h2 className="font-display text-3xl font-bold uppercase sm:text-4xl">Serviços</h2>
+              <p className="mt-2 inline-block rounded-full bg-accent px-4 py-1 text-sm font-medium">Serviços e valores fictícios para demonstração</p>
+            </div>
+            <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {servicos.map(({ nome, desc, preco, Icon }) => (
+                <article key={nome} className="flex flex-col rounded-lg border bg-card p-6 shadow-sm">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-md bg-graphite text-primary">
+                    <Icon className="h-6 w-6" aria-hidden />
+                  </div>
+                  <h3 className="mt-4 text-lg font-semibold">{nome}</h3>
+                  <p className="mt-2 flex-1 text-sm text-muted-foreground">{desc}</p>
+                  <p className="mt-4 font-display text-2xl font-bold text-primary">{preco}</p>
+                  <a href={whatsappLink(nome)} target="_blank" rel="noopener noreferrer" className="mt-4 rounded-md border-2 border-graphite px-4 py-2.5 text-center text-sm font-semibold hover:bg-graphite hover:text-graphite-foreground">Consultar serviço</a>
+                </article>
+              ))}
+            </div>
+            <p className="mt-8 text-center text-sm text-muted-foreground">Valores ilustrativos. O orçamento real depende do veículo, das peças e da avaliação do serviço.</p>
+          </div>
+        </section>
+
+        <section id="galeria" className="mx-auto max-w-6xl px-4 py-16 md:py-20">
+          <h2 className="text-center font-display text-3xl font-bold uppercase sm:text-4xl">Galeria</h2>
+          <p className="mt-2 text-center text-sm text-muted-foreground">Imagens ilustrativas geradas para esta demonstração — não retratam trabalhos realizados.</p>
+          <div className="mt-10 grid gap-4 sm:grid-cols-3">
+            {[
+              { src: gMec, alt: "Imagem ilustrativa de mãos de mecânico trabalhando em um motor" },
+              { src: gFer, alt: "Imagem ilustrativa de ferramentas organizadas na parede" },
+              { src: gFre, alt: "Imagem ilustrativa de disco e pastilhas de freio" },
+            ].map((g) => (
+              <img key={g.alt} src={g.src} alt={g.alt} loading="lazy" className="aspect-[4/3] w-full rounded-lg object-cover" />
+            ))}
+          </div>
+        </section>
+
+        <section className="bg-graphite py-16 text-graphite-foreground md:py-20">
+          <div className="mx-auto grid max-w-6xl gap-6 px-4 md:grid-cols-2">
+            <div id="horarios" className="rounded-lg border border-graphite-foreground/15 p-6 scroll-mt-24">
+              <h2 className="flex items-center gap-2 font-display text-2xl font-bold uppercase sm:text-3xl"><Clock className="h-6 w-6 text-primary" aria-hidden /> Horários</h2>
+              <p className="mt-1 text-sm opacity-70">Horário demonstrativo (fictício)</p>
+              <dl className="mt-5 space-y-3">
+                {[["Segunda a sexta", "8h às 18h"], ["Sábado", "8h às 13h"], ["Domingo", "Fechado"]].map(([d, h]) => (
+                  <div key={d} className="flex justify-between gap-4 border-b border-graphite-foreground/10 pb-2">
+                    <dt>{d}</dt><dd className="font-semibold">{h}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+            <div id="localizacao" className="rounded-lg border border-graphite-foreground/15 p-6 scroll-mt-24">
+              <h2 className="flex items-center gap-2 font-display text-2xl font-bold uppercase sm:text-3xl"><MapPin className="h-6 w-6 text-primary" aria-hidden /> Localização</h2>
+              <p className="mt-1 text-sm opacity-70">Endereço demonstrativo (fictício) — sem mapa</p>
+              <p className="mt-5 text-lg">Rua dos Motores, 123 — endereço fictício, São Gonçalo — RJ</p>
+              <p className="mt-4 text-sm opacity-80">Contato demonstrativo: {WHATSAPP_DISPLAY}</p>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer className="bg-graphite text-graphite-foreground">
+        <div className="mx-auto max-w-6xl px-4 py-6 text-center text-sm opacity-80">
+          Oficina Ponto Certo · projeto de portfólio. Nenhum serviço real é oferecido.
+        </div>
+        <Aviso />
+      </footer>
+
+      <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp demonstrativo" className="fixed bottom-4 right-4 z-50 flex items-center gap-2 rounded-full bg-whatsapp px-4 py-3 text-sm font-semibold text-primary-foreground shadow-xl hover:opacity-90">
+        <MessageCircle className="h-6 w-6" aria-hidden />
+        <span>WhatsApp <span className="font-normal opacity-90">(demo)</span></span>
+      </a>
     </div>
   );
 }
